@@ -309,21 +309,16 @@ export class SwitchTimerCard extends LitElement {
   }
 
   cancelButtonClicked(timerEntity) {
-    this.hass.callService('timer', 'finish', {
+    this.hass.callService('timer', 'cancel', {
       entity_id: timerEntity.entity_id,
     });
   }
 
-  toggleSwitch(switchEntity, state) {
-    if (state) {
-      this.hass.callService('switch', 'turn_on', {
-        entity_id: switchEntity.entity_id,
-      });
-    } else {
-      this.hass.callService('switch', 'turn_off', {
-        entity_id: switchEntity.entity_id,
-      });
-    }
+  toggleSwitch(switchEntity, turnOn) {
+    if (!switchEntity) return;
+    this.hass.callService('homeassistant', turnOn ? 'turn_on' : 'turn_off', {
+      entity_id: switchEntity.entity_id,
+    });
   }
 
   getLocalStorageKey() {
